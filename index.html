@@ -14,7 +14,7 @@
 <script>
   if ('serviceWorker' in navigator) {
     window.addEventListener('load', () => {
-      navigator.serviceWorker.register('/com_project/sw.js')
+      navigator.serviceWorker.register('/manifest_generator/sw.js')
         .then((reg) => console.log('Service Worker registered!', reg))
         .catch((err) => console.log('SW registration failed:', err));
     });
