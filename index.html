@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Minecraft Manifest Generator</title>
+  <link rel="stylesheet" href="index.css">
+  <link rel="manifest" href="manifest.json">
+  <meta name="theme-color" content="#000000">
+  <link rel="apple-touch-icon" href="icon-192.png">
+  <meta name="apple-mobile-web-app-status-bar" content="#000000">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+</head>
+<script>
+  if ('serviceWorker' in navigator) {
+    window.addEventListener('load', () => {
+      navigator.serviceWorker.register('/com_project/sw.js')
+        .then((reg) => console.log('Service Worker registered!', reg))
+        .catch((err) => console.log('SW registration failed:', err));
+    });
+  }
+</script>
+<body>
+  <div class="container">
+    <div class="header">
+      <h1>MANIFEST GENERATOR</h1>
+      <p>Create Minecraft behavior and resource pack manifests</p>
+    </div>
+
+    <div class="panel meta-panel">
+      <div class="panel-header">
+        <h2>METADATA</h2>
+        <label class="toggle-switch">
+          <input type="checkbox" id="metaToggle" checked>
+          <span class="slider"></span>
+        </label>
+      </div>
+      
+      <div id="metaFields">
+        <div class="input-row">
+          <div class="input-container">
+            <input type="text" id="metaLicense" placeholder=" ">
+            <label>License (e.g. MIT)</label>
+          </div>
+          <div class="input-container">
+            <input type="text" id="metaUrl" placeholder=" ">
+            <label>Project URL</label>
+          </div>
+        </div>
+
+        <div class="section">
+          <div class="section-header">
+            <h3>AUTHORS</h3>
+            <button class="icon-btn add-btn" id="addMetaAuthor">+</button>
+          </div>
+          <div id="metaAuthorsContainer"></div>
+        </div>
+
+        <div class="section">
+          <div class="section-header">
+            <h3>TOOLS</h3>
+            <button class="icon-btn add-btn" id="addMetaTool">+</button>
+          </div>
+          <div id="metaToolsContainer"></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="panel-container">
+      <div class="panel-wrapper bp-panel-wrapper">
+        <div class="panel bp-panel">
+          <div class="panel-header">
+            <h2>BEHAVIOR PACK</h2>
+            <label class="toggle-switch">
+              <input type="checkbox" id="bpToggle" checked>
+              <span class="slider"></span>
+            </label>
+          </div>
+
+          <div id="bpFields">
+            <div class="input-container">
+              <input type="text" id="bpName" placeholder=" " value="My Behavior Pack">
+              <label>Pack Name</label>
+            </div>
+            <div class="input-container">
+              <input type="text" id="bpDesc" placeholder=" " value="My awesome behavior pack">
+              <label>Description</label>
+            </div>
+            <div class="input-container">
+              <input type="text" id="bpUuid" placeholder=" ">
+              <label>UUID (auto-generate if empty)</label>
+              <div class="tooltip hidden" id="bpUuidTooltip">Invalid UUID format</div>
+            </div>
+            <div class="select-container">
+              <select id="bpMinEngine" class="styled-select"></select>
+              <label>Minimum Engine Version</label>
+            </div>
+
+            <div class="checkbox-row">
+              <input type="checkbox" id="bpScriptsToggle">
+              <label for="bpScriptsToggle">Enable Scripts</label>
+            </div>
+            
+            <div class="input-container hidden" id="scriptLocationContainer">
+              <input type="text" id="scriptLocation" placeholder=" " value="scripts/main.js">
+              <label>Script Entry Point</label>
+            </div>
+
+            <div class="script-modules hidden" id="bpScriptModules"></div>
+
+            <div class="section">
+              <div class="section-header">
+                <h3>SUBPACKS</h3>
+                <button class="icon-btn add-btn" id="addBpSubpack">+</button>
+              </div>
+              <div id="bpSubpacksContainer"></div>
+            </div>
+
+            <div class="section">
+              <div class="section-header">
+                <h3>DEPENDENCIES</h3>
+                <button class="icon-btn add-btn" id="addBpCustomDep">+</button>
+              </div>
+              <div id="bpCustomDepsContainer"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="panel-wrapper rp-panel-wrapper">
+        <div class="panel rp-panel">
+          <div class="panel-header">
+            <h2>RESOURCE PACK</h2>
+            <label class="toggle-switch">
+              <input type="checkbox" id="rpToggle" checked>
+              <span class="slider"></span>
+            </label>
+          </div>
+
+          <div id="rpFields">
+            <div class="input-container">
+              <input type="text" id="rpName" placeholder=" " value="My Resource Pack">
+              <label>Pack Name</label>
+            </div>
+            <div class="input-container">
+              <input type="text" id="rpDesc" placeholder=" " value="My awesome resource pack">
+              <label>Description</label>
+            </div>
+            <div class="input-container">
+              <input type="text" id="rpUuid" placeholder=" ">
+              <label>UUID (auto-generate if empty)</label>
+              <div class="tooltip hidden" id="rpUuidTooltip">Invalid UUID format</div>
+            </div>
+            <div class="select-container">
+              <select id="rpMinEngine" class="styled-select"></select>
+              <label>Minimum Engine Version</label>
+            </div>
+
+            <div class="section">
+              <div class="section-header">
+                <h3>SUBPACKS</h3>
+                <button class="icon-btn add-btn" id="addRpSubpack">+</button>
+              </div>
+              <div id="rpSubpacksContainer"></div>
+            </div>
+
+            <div class="section">
+              <div class="section-header">
+                <h3>DEPENDENCIES</h3>
+                <button class="icon-btn add-btn" id="addRpCustomDep">+</button>
+              </div>
+              <div id="rpCustomDepsContainer"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="dependencies-control">
+      <div class="checkbox-row">
+        <input type="checkbox" id="dependenciesToggle">
+        <label for="dependenciesToggle">Link Packs as Dependencies</label>
+      </div>
+      <div class="description">Automatically adds each pack as a dependency to the other when both are enabled</div>
+    </div>
+
+    <button class="generate-btn" id="generateBtn">GENERATE MANIFESTS</button>
+
+    <div class="output-container">
+      <div class="output-wrapper bp-output-wrapper">
+        <div class="output-panel bp-output">
+          <div class="output-header">
+            <h3>BEHAVIOR PACK MANIFEST</h3>
+            <button class="copy-btn" data-target="bpOutputContent">
+              <span class="copy-icon">⎘ COPY</span>
+            </button>
+          </div>
+          <div class="manifest-content" id="bpOutputContent"></div>
+        </div>
+      </div>
+      <div class="output-wrapper rp-output-wrapper">
+        <div class="output-panel rp-output">
+          <div class="output-header">
+            <h3>RESOURCE PACK MANIFEST</h3>
+            <button class="copy-btn" data-target="rpOutputContent">
+              <span class="copy-icon">⎘ COPY</span>
+            </button>
+          </div>
+          <div class="manifest-content" id="rpOutputContent"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="theme-switcher">
+    <button class="theme-btn" id="themeToggle">☀️</button>
+    <div id="themeDropdown" class="theme-dropdown hidden">
+      <button data-theme="light">Light</button>
+      <button data-theme="dark">Dark</button>
+      <button data-theme="system">System</button>
+    </div>
+  </div>
+
+  <script src="index.js"></script>
+</body>
+</html>
