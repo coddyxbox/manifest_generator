@@ -34,7 +34,7 @@
 
 @font-face {
   font-family: 'Mojangles';
-  src: url('.fonts/Mojangles.ttf') format('truetype');
+  src: url('Mojangles.ttf') format('truetype');
   font-weight: normal;
   font-style: normal;
   font-display: swap;
