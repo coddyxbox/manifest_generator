@@ -600,9 +600,10 @@ const copyToClipboard = async (id) => {
   try {
     await navigator.clipboard.writeText(content);
     const btn = document.querySelector(`.copy-btn[data-target="${id}"]`);
-    const originalText = btn.textContent;
-    btn.textContent = '⎘ COPIED!';
-    setTimeout(() => btn.textContent = originalText, 2000);
+    const iconSpan = btn.querySelector('.copy-icon');
+    const originalText = iconSpan.textContent;
+    iconSpan.textContent = '⎘ COPIED!';
+    setTimeout(() => iconSpan.textContent = originalText, 2000);
   } catch (error) {
     console.error('Failed to copy:', error);
   }
