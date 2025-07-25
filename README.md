@@ -1,1 +1,1 @@
-# coddyxbox.github.io
+# Manifest Generator
